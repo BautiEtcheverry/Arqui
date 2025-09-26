@@ -1,0 +1,23 @@
+Variables
+Hasta ahora, siempre que hizo falta reservamos espacio en la zona de datos de un
+programa. Por ejemplo, para guardar una variable. Pero, ¿Qué ocurriría en el caso de que
+una función sea recursiva?
+¿Cómo hace C a que las variables automáticas sólo vivan en el scope de la función? La
+respuesta es guardar esas variables en el stack, así, cuando un stack frame se destruye, al
+mismo tiempo se libera la memoria utilizada para sus variables. 
+
+1. ¿Por qué no se debe devolver un arreglo local a una función como valor de retorno?
+Porque los arreglos locales se almacenan en el stack. Cuando la función termina, el stack frame se destruye
+ y la memoria del arreglo deja de ser válida. Devolver un puntero a esa memoria causaría errores, ya que 
+ el contenido puede ser sobrescrito por otras funciones.
+
+2. ¿Por qué restan 16 bytes de ESP y no simplemente 4?
+Se reservan 16 bytes para asegurar espacio suficiente para todas las variables locales y para mantener la alineación
+del stack (por ejemplo, alineación a 16 bytes para eficiencia en acceso de memoria y cumplimiento de ABI).
+Aunque solo se usa una variable, el compilador puede reservar más espacio por alineación o variables adicionales.
+
+3. ¿Por qué, luego de haber obtenido el resultado de la suma (en EAX), se lo guarda en la zona de memoria asignada a 
+la variable resultado y luego se la vuelve a leer de ese lugar?
+Esto simula el comportamiento de las variables locales en C. El valor se guarda en la variable local (en el stack) y 
+luego se lee para devolverlo, respetando la semántica de C y permitiendo que el código sea compatible con depuradores 
+y otras herramientas que esperan que las variables locales existan en memoria, no solo en registros.
