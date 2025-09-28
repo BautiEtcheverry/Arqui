@@ -1,0 +1,41 @@
+1.
+//variables1.c
+int foo() {
+ int numero;
+}
+2.
+//variables2.c
+int foo() {
+ int numero = 21;
+}
+3.
+//variables3.c
+int numero;
+int foo() {
+ numero = 21;
+}
+4.
+int foo() {
+ static int numero = 21;
+}
+5.
+extern int numero;
+int foo() {
+ numero = 10;
+} 
+
+Diferencias entre las formas de definir variables:
+1. int numero; dentro de la función: Variable local automática, se crea en el stack cada vez que se llama la función,
+ no tiene valor inicial definido.
+
+2. int numero = 21; dentro de la función: Variable local automática, se crea en el stack y se inicializa cada vez que
+ se llama la función.
+
+3. int numero; fuera de la función: Variable global, se crea en la sección de datos del programa, existe durante toda
+ la ejecución y es visible en todo el archivo.
+
+4. static int numero = 21; dentro de la función: Variable local estática, se crea en la sección de datos, existe durante
+ toda la ejecución pero solo es visible dentro de la función, conserva su valor entre llamadas.
+
+5. extern int numero; dentro de la función: Variable global definida en otro archivo, permite acceder/modificar una 
+variable global externa.

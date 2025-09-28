@@ -5,11 +5,7 @@
 
 GLOBAL print
 GLOBAL exit
-GLOBAL newLine
 GLOBAL numtostr
-GLOBAL num2string
-
-
 
 section .text
 
@@ -95,7 +91,7 @@ numtostr:
 	ADD EBX,9               ; me posiciono al final del string para empezar a colocar
 	mov byte [ebx], 0       ; los caracteres ASCII de derecha a izquierda comenzando con cero
 	dec ebx                 ; binario
-.sigo:	
+.sigo	
 	DIV ECX
 	OR Dl, 0x30  ; convierto el resto  menor a 10 a ASCII
 	mov byte [ebx], Dl  
@@ -104,82 +100,13 @@ numtostr:
 	jz .termino
 	mov edx,0
 	jmp .sigo
-.termino:
+.termino
 	inc ebx
 	call print
 	POPAD
 	mov esp,ebp	 
 	ret
 
-
-;-------------------------------------------------------------------------------
-;el numero a convertir debe estar en EAX
-;en EBX debe estar la direccion del buffer
-
-;se devielve en EAX el numero pasado a string(con marca de fin 0)
-
-num2string:
-        pushad ;se pushean al stack los registron(con un orden ya definido)
-        mov edi, ebx
-        mov ecx,0 ;lo voy a usar para guardar la long del numero. Podria usar otro registro
-        test eax,eax
-        jnz .pusher
-        mov byte [edi], '0' ;si edx era 0, pongo el 0
-        mov byte [edi+1], 0  ; pongo la marca de fin despues del numero 0
-        mov eax,1           ;dejo en EAX la longitud del numero
-        jmp .done
-
-.pusher:
-        push eax
-.mainLoop:
-        test eax,eax ;chequeo si ya llegue al ultimo digito del numero
-        je .final
-
-        xor edx,edx
-        mov esi,10
-        div esi    ;dividendo EDX:EAX, divisor ESI 
-        inc ecx
-
-        jmp .mainLoop
-
-.final:
-        mov esi,ecx
-
-        mov edi,ebx
-        add edi,ecx
-        mov byte [edi],0
-        dec edi
-        mov ecx, 10
-.preDigits:
-        pop eax
-.digits:
-        xor edx,edx
-        div ecx
-        add dl,'0'
-        mov [edi],dl
-        dec edi
-        test eax,eax
-        jnz .digits
-
-        mov eax,esi
-.done:
-        popad
-        ret
-
-;===============================================================================
-
-;===============================================================================
-newLine:
-        pushad
-        mov ecx, new_line           ; Puntero a la cadena
-        mov edx, 1                      ; Largo de la cadena 
-        mov ebx, 1                      ; FileDescriptor (STDOUT)
-        mov eax, 4                      ; ID del Syscall WRITE
-        int 80h                         ; Ejecucion de la llamada
-        popad
-        ret
-section .data
-	new_line db 10,0
 
 
 
