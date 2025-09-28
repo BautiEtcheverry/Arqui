@@ -1,8 +1,0 @@
-Linkedit asm code with nasm for 32bit SO:
-nasm -f elf32 libasm.asm - libasm.o
-
-Compiling object code for 32bit SO with ld: 
-ld -m elf_i386 libasm.o -o libasm
-
-Compiling 
-
