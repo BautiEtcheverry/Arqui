@@ -27,11 +27,10 @@ main:
 
 
     push    ecx  ; backup
-
     push    eax  ; *argv
-
-    push    fmtB ; formato
-    push    ebx
+    
+    push    ebx  ;              } El error era acá, se hacía push fmtB antes de push ebx. Pero en ebx esta el indice, en eax el
+    push    fmtB ; formato      }argumebto y eb fmtB el buffer con el mensaje(argv[%d] = %s", 10, 0) por lo que primero se pushea eax y dsp ebx.
     call    printf
     add     esp,4*3 ; borramos los datos usados de la pila
 
